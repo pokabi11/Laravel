@@ -13,12 +13,19 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\WebController::class,'home']);
 Route::get("/about-us",[\App\Http\Controllers\WebController::class,"aboutUs"]);
 
-Route::get("admin/product",[ProductController::class,"list"]);
-Route::get("admin/product/create",[ProductController::class,"create"]);
-Route::post("admin/product/create",[ProductController::class,"store"]);
-Route::get("admin/product/edit/{product}",[ProductController::class,"edit"])->name("product_edit");
-Route::put("admin/product/edit/{product}",[ProductController::class,"update"]);
-Route::delete("admin/product/delete/{product}",[ProductController::class,"delete"])->name("product_delete");
+Route::prefix(env("ADMIN_PATH"))->group(function(){
+    Route::get('/dashboard', [\App\Http\Controllers\WebController::class,'home']);
+
+    Route::prefix("product")->group(function (){
+        Route::get("/",[ProductController::class,"list"]);
+        Route::get("/create",[ProductController::class,"create"]);
+        Route::post("/create",[ProductController::class,"store"]);
+        Route::get("/edit/{product}",[ProductController::class,"edit"])->name("product_edit");
+        Route::put("/edit/{product}",[ProductController::class,"update"]);
+        Route::delete("/delete/{product}",[ProductController::class,"delete"])->name("product_delete");
+    });
+});
+
+Route::get("/",[\App\Http\Controllers\GuestController::class,"index"]);

@@ -36,6 +36,18 @@ class WebController extends Controller
 
         $today_orders = Order::whereDate("created_at",$today)->count();
 
+        //5 san pham ban chay
+
+        $productIds = DB::table("order_products")
+            ->groupBy("product_id")
+            ->select(DB::raw("product_id, sum(qty) as total_qty"))
+            ->orderBy("total_qty")
+            ->limit(5)
+            ->get()
+            ->pluck("product_id")
+            ->toArray();
+        $bestsellers = Product::find($productIds);
+
         return view("welcome",compact('orders_count','orders_sum_grand_total',
         'products_count','total_qty','category_names','category_products_counts'));
     }
