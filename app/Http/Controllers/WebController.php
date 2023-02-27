@@ -27,25 +27,25 @@ class WebController extends Controller
         $category_products_counts = json_encode($category_products_counts);
 
         $today = today();
-        $last7 = today()->subDay(6);
-        $last6 = today()->subDay(5);
-        $last5 = today()->subDay(4);
-        $last4 = today()->subDay(3);
-        $last3 = today()->subDay(2);
-        $last2 = today()->subDay(1);
+        $last7 = today() -> subDay(6);
+        $last6 = today() -> subDay(5);
+        $last5 = today() -> subDay(4);
+        $last4 = today() -> subDay(3);
+        $last3 = today() -> subDay(2);
+        $last2 = today() -> subDay(1);
 
         $today_orders = Order::whereDate("created_at",$today)->count();
 
         //5 san pham ban chay
 
         $productIds = DB::table("order_products")
-            ->groupBy("product_id")
-            ->select(DB::raw("product_id, sum(qty) as total_qty"))
-            ->orderBy("total_qty")
-            ->limit(5)
-            ->get()
-            ->pluck("product_id")
-            ->toArray();
+            -> groupBy("product_id")
+            -> elect(DB::raw("product_id, sum(qty) as total_qty"))
+            -> orderBy("total_qty")
+            -> limit(5)
+            -> get()
+            -> pluck("product_id")
+            -> toArray();
         $bestsellers = Product::find($productIds);
 
         return view("welcome",compact('orders_count','orders_sum_grand_total',

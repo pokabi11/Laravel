@@ -13,9 +13,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 
     <!-- Css Styles -->
-    @yield(before_css)
-    @include(guest.html.css)
-    @yield(after_css)
+    @yield("before_css")
+    @include("guest.html.css")
+    @yield("after_css")
 </head>
 <body>
 <!-- Page Preloder -->
@@ -83,19 +83,19 @@
 <!-- Humberger End -->
 
 <!-- Header Section Begin -->
-@include(guest.html.hero_header)
+@include("guest.html.hero_header")
 <!-- Header Section End -->
 
 <!-- Hero Section Begin -->
-@include(guest.html.hero_section)
+@include("guest.html.hero_section")
 <!-- Hero Section End -->
 
 <!-- Categories Section Begin -->
-@include(guest.html.categories_section)
+@include("guest.html.categories_section")
 <!-- Categories Section End -->
 
 <!-- Featured Section Begin -->
-@include(guest.html.featured_section)
+@include("guest.html.featured_section")
 <!-- Featured Section End -->
 
 <!-- Banner Begin -->
@@ -118,19 +118,19 @@
 <!-- Banner End -->
 
 <!-- Latest Product Section Begin -->
-@include(guest.html.lastest_product_section)
+@include("guest.html.lastest_product_section")
 <!-- Latest Product Section End -->
 
 <!-- Blog Section Begin -->
-@include(guest.html.blog_section)
+@include("guest.html.blog_section")
 <!-- Blog Section End -->
 
 <!-- Footer Section Begin -->
-@include(guest.html.footer)
+@include("guest.html.footer")
 <!-- Footer Section End -->
 
 <!-- Js Plugins -->
-@include(guest.html.scripts)
+@include("guest.html.scripts")
 
 
 

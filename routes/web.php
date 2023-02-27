@@ -15,17 +15,21 @@ use App\Http\Controllers\ProductController;
 
 Route::get("/about-us",[\App\Http\Controllers\WebController::class,"aboutUs"]);
 
-Route::prefix(env("ADMIN_PATH"))->group(function(){
+Route::prefix(env("ADMIN_PATH")) -> group(function(){
     Route::get('/dashboard', [\App\Http\Controllers\WebController::class,'home']);
 
-    Route::prefix("product")->group(function (){
+    Route::prefix("product") -> group(function (){
         Route::get("/",[ProductController::class,"list"]);
         Route::get("/create",[ProductController::class,"create"]);
         Route::post("/create",[ProductController::class,"store"]);
-        Route::get("/edit/{product}",[ProductController::class,"edit"])->name("product_edit");
+        Route::get("/edit/{product}",[ProductController::class,"edit"]) -> name("product_edit");
         Route::put("/edit/{product}",[ProductController::class,"update"]);
-        Route::delete("/delete/{product}",[ProductController::class,"delete"])->name("product_delete");
+        Route::delete("/delete/{product}",[ProductController::class,"delete"]) -> name("product_delete");
     });
 });
 
 Route::get("/",[\App\Http\Controllers\GuestController::class,"index"]);
+
+Route::prefix(env("LIVE_PATH")) -> group(function (){
+    Route::get('homepage',[\App\Http\Controllers\LiveWebController::class,'home']);
+});
