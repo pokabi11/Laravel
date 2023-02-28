@@ -8,15 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ogani | Template</title>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
-    <!-- Css Styles -->
     @yield("before_css")
     @include("guest.html.css")
     @yield("after_css")
 </head>
+
 <body>
 <!-- Page Preloder -->
 <div id="preloder">
@@ -27,7 +23,7 @@
 <div class="humberger__menu__overlay"></div>
 <div class="humberger__menu__wrapper">
     <div class="humberger__menu__logo">
-        <a href="#"><img src="img/logo.png" alt=""></a>
+        <a href="#"><img src="/guest/img/logo.png" alt=""></a>
     </div>
     <div class="humberger__menu__cart">
         <ul>
@@ -38,7 +34,7 @@
     </div>
     <div class="humberger__menu__widget">
         <div class="header__top__right__language">
-            <img src="img/language.png" alt="">
+            <img src="/guest/img/language.png" alt="">
             <div>English</div>
             <span class="arrow_carrot-down"></span>
             <ul>
@@ -52,7 +48,7 @@
     </div>
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
-            <li class="active"><a href="./index.html">Home</a></li>
+            <li class="active"><a href="./">Home</a></li>
             <li><a href="./shop-grid.html">Shop</a></li>
             <li><a href="#">Pages</a>
                 <ul class="header__menu__dropdown">
@@ -82,58 +78,74 @@
 </div>
 <!-- Humberger End -->
 
-<!-- Header Section Begin -->
-@include("guest.html.hero_header")
-<!-- Header Section End -->
-
+@include("guest.html.header")
 <!-- Hero Section Begin -->
-@include("guest.html.hero_section")
-<!-- Hero Section End -->
-
-<!-- Categories Section Begin -->
-@include("guest.html.categories_section")
-<!-- Categories Section End -->
-
-<!-- Featured Section Begin -->
-@include("guest.html.featured_section")
-<!-- Featured Section End -->
-
-<!-- Banner Begin -->
-<div class="banner">
+<section class="hero">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="banner__pic">
-                    <img src="img/banner/banner-1.jpg" alt="">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>All departments</span>
+                    </div>
+                    <ul>
+                        <li><a href="#">Fresh Meat</a></li>
+                        <li><a href="#">Vegetables</a></li>
+                        <li><a href="#">Fruit & Nut Gifts</a></li>
+                        <li><a href="#">Fresh Berries</a></li>
+                        <li><a href="#">Ocean Foods</a></li>
+                        <li><a href="#">Butter & Eggs</a></li>
+                        <li><a href="#">Fastfood</a></li>
+                        <li><a href="#">Fresh Onion</a></li>
+                        <li><a href="#">Papayaya & Crisps</a></li>
+                        <li><a href="#">Oatmeal</a></li>
+                        <li><a href="#">Fresh Bananas</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="banner__pic">
-                    <img src="img/banner/banner-2.jpg" alt="">
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="#">
+                            <div class="hero__search__categories">
+                                All Categories
+                                <span class="arrow_carrot-down"></span>
+                            </div>
+                            <input type="text" placeholder="What do yo u need?">
+                            <button type="submit" class="site-btn">SEARCH</button>
+                        </form>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>+65 11.188.888</h5>
+                            <span>support 24/7 time</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero__item set-bg" data-setbg="/guest/img/hero/banner.jpg">
+                    <div class="hero__text">
+                        <span>FRUIT FRESH</span>
+                        <h2>Vegetable <br />100% Organic</h2>
+                        <p>Free Pickup and Delivery Available</p>
+                        <a href="#" class="primary-btn">SHOP NOW</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Banner End -->
+</section>
+<!-- Hero Section End -->
+@yield("main-content")
 
-<!-- Latest Product Section Begin -->
-@include("guest.html.lastest_product_section")
-<!-- Latest Product Section End -->
-
-<!-- Blog Section Begin -->
-@include("guest.html.blog_section")
-<!-- Blog Section End -->
-
-<!-- Footer Section Begin -->
 @include("guest.html.footer")
-<!-- Footer Section End -->
 
-<!-- Js Plugins -->
+@yield("before_js")
 @include("guest.html.scripts")
-
-
-
+@yield("after_js")
 </body>
 
 </html>
