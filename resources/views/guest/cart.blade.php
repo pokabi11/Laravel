@@ -61,7 +61,7 @@
                                             ${{$item->price * $item->buy_qty}}
                                         </td>
                                         <td class="shoping__cart__item__close">
-                                            <span class="icon_close"></span>
+                                            <a href="{{url("remove-item",["product"=>$item->id])}}"> <span class="icon_close"></span></a>
                                         </td>
                                     </tr>
                                 @empty
@@ -101,8 +101,8 @@
                                 <li>Subtotal <span>${{number_format($grand_total)}}</span></li>
                                 <li>Total <span>${{number_format($grand_total)}}</span></li>
                             </ul>
-                            @if($can_checkout)
-                                <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                            @if($can_checkout && count($cart)>0)
+                                <a href="{{url("checkout")}}" class="primary-btn">PROCEED TO CHECKOUT</a>
                             @endif
                         </div>
                     </div>

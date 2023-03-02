@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailOrder;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class GuestController extends Controller
 {
@@ -57,12 +61,82 @@ class GuestController extends Controller
 
     public function removeItem(Product $product){
         $cart = session()->has("cart") && is_array(session("cart"))?session("cart"):[];
-        foreach($cart as $key=>$item){
-            if($item->id==$product->id){
+        foreach ($cart as $key=>$item){
+            if($item->id == $product->id){
                 unset($cart[$key]);
             }
         }
         session(["cart"=>$cart]);
+        return redirect()->to("cart");
+    }
+
+    public function checkout(){
+        $cart = session()->has("cart") && is_array(session("cart"))?session("cart"):[];
+        $grand_total = 0;
+        $can_checkout = true;
+        foreach ($cart as $item){
+            $grand_total+= $item->price * $item->buy_qty;
+            if($item->qty < $item->buy_qty){
+                $can_checkout= false;
+            }
+        }
+        if(!$can_checkout && count($cart) > 0){
+            return redirect()->to("cart");
+        }
+        return view("guest.checkout",compact('cart','grand_total'));
+    }
+
+    public function placeOrder(Request $request){
+        $request->validate([
+            "firstname"=> "required",
+            "lastname"=> "required",
+            "country"=> "required",
+            "address"=> "required",
+            "city"=> "required",
+            "state"=> "required",
+            "postcode"=> "required|numeric",
+            "phone"=> "required",
+            "email"=> "required",
+        ]);
+        $cart = session()->has("cart") && is_array(session("cart"))?session("cart"):[];
+        $grand_total = 0;
+        $can_checkout = true;
+        foreach ($cart as $item){
+            $grand_total+= $item->price * $item->buy_qty;
+            if($item->qty < $item->buy_qty){
+                $can_checkout= false;
+            }
+        }
+        if(!$can_checkout && count($cart) > 0){
+            return redirect()->to("cart");
+        }
+        $order = Order::create(
+            [
+                "grand_total"=> $grand_total,
+                "status"=>Order::PENDING,
+                "shipping_address"=>$request->get("address"),
+                "telephone"=>$request->get("phone"),
+                "fullname"=>$request->get("firstname"). $request->get("lastname"),
+                "country"=>$request->get("country"),
+                "city"=>$request->get("city"),
+                "state"=>$request->get("state"),
+                "postcode"=>$request->get("postcode"),
+                "email"=>$request->get("email"),
+                "note"=>$request->get("note"),
+            ]
+        );
+        foreach ($cart as $item){
+            DB::table("order_products")->insert([
+                "order_id"=>$order->id,
+                "product_id"=>$item->id,
+                "qty"=>$item->buy_qty,
+                "price"=>$item->price
+            ]);
+            $item->decrement("qty",$item->buy_qty);
+        }
+//        session()->forget("cart");
+        Mail::to("hlong2k1@gmail.com")->send(new MailOrder($order));
+        // to  checkout-success
         return redirect()->to("cart");
     }
 }

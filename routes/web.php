@@ -32,6 +32,9 @@ Route::get("/",[\App\Http\Controllers\GuestController::class,"index"]);
 Route::get("/detail/{product}",[\App\Http\Controllers\GuestController::class,"product"]);
 Route::get("/add-to-cart/{product}",[\App\Http\Controllers\GuestController::class,"addToCart"]);
 Route::get("/cart",[\App\Http\Controllers\GuestController::class,"cart"]);
+Route::get("/remove-item/{product}",[\App\Http\Controllers\GuestController::class,"removeItem"]);
+Route::get("/checkout",[\App\Http\Controllers\GuestController::class,"checkout"]);
+Route::post("/checkout",[\App\Http\Controllers\GuestController::class,"placeOrder"]);
 
 
 //live code

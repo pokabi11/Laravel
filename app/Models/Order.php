@@ -15,7 +15,21 @@ class Order extends Model
         "status",
         "shipping_address",
         "telephone",
+        "fullname",
+        "country",
+        "city",
+        "state",
+        "postcode",
+        "email",
+        "note",
     ];
+
+    const PENDING =0;
+    const CONFIRM =1;
+    const SHIPPING =2;
+    const COMPLETE =3;
+    const CANCEL =4;
+    const REFUND =5;
 
     public function Products(){
         return $this->belongsToMany(Product::class,"order_products")->withPivot();
