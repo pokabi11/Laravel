@@ -18,9 +18,10 @@ class UpdateTableOrders extends Migration
             $table->string("country");
             $table->string("city");
             $table->string("state");
-            $table->string("postcode");
+            $table->integer("postcode");
             $table->string("email");
-            $table->string("note");
+            $table->string("note")->nullable();
+            $table->boolean("paid")->default(false);
         });
     }
 
@@ -39,7 +40,8 @@ class UpdateTableOrders extends Migration
                 "state",
                 "postcode",
                 "email",
-                "note"
+                "note",
+                "paid"
             ]);
         });
     }

@@ -635,4 +635,25 @@
             }
         });
     </script>
+
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script>
+
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('778ba3922c41ec19e6df', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('my-channel');
+        channel.bind('my-event', function(data) {
+            if(data.confirm){
+                var cf = confirm(data.message);
+                if(cf){
+                    window.location.reload();
+                }
+            }
+        });
+    </script>
 @endsection

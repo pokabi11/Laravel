@@ -112,15 +112,15 @@
                                     ut labore et dolore magna aliqua.</p>
                                 <div class="checkout__input__checkbox">
                                     <label for="payment">
-                                        Check Payment
-                                        <input type="checkbox" id="payment">
+                                        COD
+                                        <input name="payment" value="cod" type="radio" id="payment">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
                                 <div class="checkout__input__checkbox">
                                     <label for="paypal">
                                         Paypal
-                                        <input type="checkbox" id="paypal">
+                                        <input name="payment" value="paypal" type="radio" id="paypal">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>

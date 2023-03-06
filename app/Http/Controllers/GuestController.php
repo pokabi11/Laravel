@@ -8,6 +8,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Pusher\Pusher;
+use Srmklive\PayPal\Services\PayPal;
 
 class GuestController extends Controller
 {
@@ -134,9 +136,75 @@ class GuestController extends Controller
             ]);
             $item->decrement("qty",$item->buy_qty);
         }
-//        session()->forget("cart");
+        session()->forget("cart");
+        //notification
+        $options = array(
+            'cluster' => 'ap1',
+            'useTLS' => true
+        );
+        $pusher = new Pusher(
+            '7525b5febd4ff01b00ea',
+            '85a6f6057649eee1f91e',
+            '1563002',
+            $options
+        );
+
+        $data['message'] = 'Có 1 đơn hàng mới, bạn có muốn tải lại trang?';
+        $data["confirm"] = true;
+        $pusher->trigger('my-channel', 'my-event', $data);
+        //end notification
+        //mail
         Mail::to("hlong2k1@gmail.com")->send(new MailOrder($order));
+        //end mail
+
         // to  checkout-success
-        return redirect()->to("cart");
+        if($request->get("payment") == "paypal")
+            return redirect()->route("process_paypal",["order"=>$order->id]);
+        return redirect()->route("process_paypal",["order"=>$order->id]);
+    }
+
+    public function processPaypal(Order $order){
+        $provider = new PayPal();
+        $provider->setApiCredentials(config('paypal'));
+        $paypalToken = $provider->getAccessToken();
+
+        $response = $provider->createOrder([
+            "intent" => "CAPTURE",
+            "application_context" => [
+                "return_url" => route('success_paypal',['order'=>$order->id]),
+                "cancel_url" => route('cancel_paypal'),
+            ],
+            "purchase_units" => [
+                0 => [
+                    "amount" => [
+                        "currency_code" => "USD",
+                        "value" => number_format($order->grand_total,2),
+                    ]
+                ]
+            ]
+        ]);
+
+        if (isset($response['id']) && $response['id'] != null) {
+
+            // redirect to approve href
+            foreach ($response['links'] as $links) {
+                if ($links['rel'] == 'approve') {
+                    return redirect()->away($links['href']);
+                }
+            }
+
+        }
+        return "Có sự cố xảy ra trong quá trình thanh toán, vui lòng thanh toán lại sau.";
+    }
+    public function successPaypal(Order $order){
+        $order->update(["paid"=>true]);
+        if($order->status == Order::PENDING){
+            $order->update(["status"=>Order::CONFIRM]);
+        }
+        return redirect()->to("/cart");
+    }
+
+    public function cancelPaypal(Order $order){
+        return redirect()->to("/cart");
     }
 }

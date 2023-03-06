@@ -22,6 +22,7 @@ class Order extends Model
         "postcode",
         "email",
         "note",
+        "paid"
     ];
 
     const PENDING =0;
