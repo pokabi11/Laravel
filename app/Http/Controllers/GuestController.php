@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewOrderCreated;
 use App\Mail\MailOrder;
 use App\Models\Order;
 use App\Models\Product;
@@ -136,26 +137,8 @@ class GuestController extends Controller
             ]);
             $item->decrement("qty",$item->buy_qty);
         }
-        session()->forget("cart");
-        //notification
-        $options = array(
-            'cluster' => 'ap1',
-            'useTLS' => true
-        );
-        $pusher = new Pusher(
-            '7525b5febd4ff01b00ea',
-            '85a6f6057649eee1f91e',
-            '1563002',
-            $options
-        );
 
-        $data['message'] = 'Có 1 đơn hàng mới, bạn có muốn tải lại trang?';
-        $data["confirm"] = true;
-        $pusher->trigger('my-channel', 'my-event', $data);
-        //end notification
-        //mail
-        Mail::to("hlong2k1@gmail.com")->send(new MailOrder($order));
-        //end mail
+        event(new NewOrderCreated($order));
 
         // to  checkout-success
         if($request->get("payment") == "paypal")
@@ -178,7 +161,7 @@ class GuestController extends Controller
                 0 => [
                     "amount" => [
                         "currency_code" => "USD",
-                        "value" => number_format($order->grand_total,2),
+                        "value" => number_format($order->grand_total,2,".",""),
                     ]
                 ]
             ]

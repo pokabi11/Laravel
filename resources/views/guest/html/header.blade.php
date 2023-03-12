@@ -29,7 +29,20 @@
                             </ul>
                         </div>
                         <div class="header__top__right__auth">
-                            <a href="#"><i class="fa fa-user"></i> Login</a>
+                            @guest
+                                <a href="{{route("login")}}"><i class="fa fa-user"></i>
+                                    Login</a>
+                            @endguest
+
+                            @auth
+                                <form action="{{route("logout")}}" method="post">
+                                    @csrf
+                                    <button type="submit">
+                                        <i class="fa fa-user"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            @endauth
                         </div>
                     </div>
                 </div>

@@ -113,9 +113,15 @@
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                <i class="fas fa-th-large"></i>
-            </a>
+            @auth
+                <form action="{{route("logout")}}" method="post">
+                    @csrf
+                    <button class="nav-link"  type="submit">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </form>
+            @endauth
+
         </li>
     </ul>
 </nav>

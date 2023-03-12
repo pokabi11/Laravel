@@ -15,7 +15,7 @@ use App\Http\Controllers\ProductController;
 
 Route::get("/about-us",[\App\Http\Controllers\WebController::class,"aboutUs"]);
 
-Route::prefix(env("ADMIN_PATH")) -> group(function(){
+Route::middleware(["auth","admin"])->prefix(env("ADMIN_PATH")) -> group(function(){
     Route::get('/dashboard', [\App\Http\Controllers\WebController::class,'home']);
 
     Route::prefix("product") -> group(function (){
@@ -45,3 +45,11 @@ Route::get("/cancel-paypal/}",[\App\Http\Controllers\GuestController::class,"can
 Route::prefix(env("LIVE_PATH")) -> group(function (){
     Route::get('homepage',[\App\Http\Controllers\LiveWebController::class,'home']);
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

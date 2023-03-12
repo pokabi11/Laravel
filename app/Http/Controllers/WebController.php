@@ -40,7 +40,7 @@ class WebController extends Controller
 
         $productIds = DB::table("order_products")
             -> groupBy("product_id")
-            -> elect(DB::raw("product_id, sum(qty) as total_qty"))
+            -> select(DB::raw("product_id, sum(qty) as total_qty"))
             -> orderBy("total_qty")
             -> limit(5)
             -> get()
