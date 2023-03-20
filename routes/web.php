@@ -43,7 +43,10 @@ Route::get("/cancel-paypal/}",[\App\Http\Controllers\GuestController::class,"can
 
 //live code
 Route::prefix(env("LIVE_PATH")) -> group(function (){
-    Route::get('homepage',[\App\Http\Controllers\LiveWebController::class,'home']);
+    Route::get('/homepage',[\App\Http\Controllers\LiveWebController::class,'home']);
+    Route::prefix("product")->group(function (){
+
+    });
 });
 
 Auth::routes();

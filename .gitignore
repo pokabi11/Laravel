@@ -5,6 +5,7 @@
 /public/uploads
 /public/assets
 /public/guest
+/public/live
 /storage/*.key
 /vendor
 #.env
